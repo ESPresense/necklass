@@ -1,4 +1,4 @@
-# github2beads
+# necklass
 
 GitHub webhook → beads integration service. Converts GitHub events (PRs, issues, checks, comments) into beads with automatic lifecycle management.
 
