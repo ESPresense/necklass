@@ -21,8 +21,8 @@ services:
       - /usr/local/bin/bd:/usr/local/bin/bd:ro
       
       # Mount beads repository (READ/WRITE)
-      # Adjust path to your beads repo location
-      - ${BEADS_REPO_PATH:-/root/.openclaw/workspace}:/workspace
+      # Set BEADS_REPO_PATH in .env to your beads repo location
+      - ${BEADS_REPO_PATH}:/workspace
       
       # Optional: persist Tailscale state between restarts
       - tailscale-state:/var/lib/tailscale
