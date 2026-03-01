@@ -1,28 +1,20 @@
-FROM golang:1.25-alpine AS builder
-
-# Clone and build beads at specific commit (compatible version)
-RUN apk add --no-cache git && \
-    git config --global credential.helper "" && \
-    GIT_TERMINAL_PROMPT=0 git clone https://github.com/steveyegge/beads.git /build && \
-    cd /build && \
-    git checkout bd25acbc && \
-    go build -o bd ./cmd/bd
-
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Install Tailscale from Alpine repos
+# Install Tailscale and dependencies
 RUN apk add --no-cache \
     ca-certificates \
     iptables \
     ip6tables \
     bash \
     jq \
+    curl \
     tailscale
 
-# Copy bd from builder
-COPY --from=builder /build/bd /usr/local/bin/bd
+# Download prebuilt bd binary (v0.50.3)
+RUN curl -fsSL https://github.com/steveyegge/beads/releases/download/v0.50.3/bd-linux-amd64 -o /usr/local/bin/bd && \
+    chmod +x /usr/local/bin/bd
 
 # Copy package files
 COPY package*.json ./
