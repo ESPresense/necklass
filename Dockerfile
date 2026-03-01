@@ -1,3 +1,11 @@
+FROM golang:1.23-alpine AS builder
+
+# Clone and build beads
+RUN apk add --no-cache git && \
+    git clone https://github.com/asg017/beads.git /build && \
+    cd /build && \
+    go build -o bd ./cmd/bd
+
 FROM node:20-alpine
 
 WORKDIR /app
@@ -10,6 +18,9 @@ RUN apk add --no-cache \
     bash \
     jq \
     tailscale
+
+# Copy bd from builder
+COPY --from=builder /build/bd /usr/local/bin/bd
 
 # Copy package files
 COPY package*.json ./

@@ -8,7 +8,7 @@ const execAsync = promisify(exec);
 const app = express();
 const PORT = process.env.PORT || 80;
 const SECRET = process.env.GITHUB_WEBHOOK_SECRET;
-const BD_PATH = process.env.BD_PATH || 'bd';
+const BD_PATH = 'bd';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
 if (!SECRET) {
