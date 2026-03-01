@@ -13,15 +13,17 @@ services:
       
       # Optional: server config
       PORT: ${PORT:-80}
-      BD_PATH: ${BD_PATH:-/usr/local/bin/bd}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     
     volumes:
-      # Mount bd CLI (adjust path as needed)
-      - /usr/local/bin/bd:/usr/local/bin/bd:ro
+      # Mount beads repository (READ/WRITE)
+      # Set BEADS_REPO_PATH in .env to your beads repo location
+      - ${BEADS_REPO_PATH}:/workspace
       
       # Optional: persist Tailscale state between restarts
       - tailscale-state:/var/lib/tailscale
+    
+    working_dir: /workspace
     
     # Only needed if NOT using Tailscale Funnel
     # ports:
