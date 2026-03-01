@@ -2,7 +2,8 @@ FROM golang:1.23-alpine AS builder
 
 # Clone and build beads at specific commit (compatible version)
 RUN apk add --no-cache git && \
-    git clone https://github.com/asg017/beads.git /build && \
+    git config --global credential.helper "" && \
+    GIT_TERMINAL_PROMPT=0 git clone https://github.com/steveyegge/beads.git /build && \
     cd /build && \
     git checkout bd25acbc && \
     go build -o bd ./cmd/bd
