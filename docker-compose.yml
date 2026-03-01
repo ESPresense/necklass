@@ -17,11 +17,17 @@ services:
       LOG_LEVEL: ${LOG_LEVEL:-info}
     
     volumes:
-      # Mount bd CLI (adjust path as needed)
+      # Mount bd CLI
       - /usr/local/bin/bd:/usr/local/bin/bd:ro
+      
+      # Mount beads repository (READ/WRITE)
+      # Adjust path to your beads repo location
+      - ${BEADS_REPO_PATH:-/root/.openclaw/workspace}:/workspace
       
       # Optional: persist Tailscale state between restarts
       - tailscale-state:/var/lib/tailscale
+    
+    working_dir: /workspace
     
     # Only needed if NOT using Tailscale Funnel
     # ports:
