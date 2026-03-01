@@ -1,0 +1,31 @@
+services:
+  necklass:
+    image: ghcr.io/espresense/necklass:latest
+    container_name: necklass
+    restart: unless-stopped
+    environment:
+      # Required
+      GITHUB_WEBHOOK_SECRET: ${GITHUB_WEBHOOK_SECRET}
+      
+      # Optional: Tailscale Funnel (zero-config public HTTPS)
+      TAILSCALE_AUTHKEY: ${TAILSCALE_AUTHKEY:-}
+      TAILSCALE_HOSTNAME: ${TAILSCALE_HOSTNAME:-necklass}
+      
+      # Optional: server config
+      PORT: ${PORT:-80}
+      BD_PATH: ${BD_PATH:-/usr/local/bin/bd}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+    
+    volumes:
+      # Mount bd CLI (adjust path as needed)
+      - /usr/local/bin/bd:/usr/local/bin/bd:ro
+      
+      # Optional: persist Tailscale state between restarts
+      - tailscale-state:/var/lib/tailscale
+    
+    # Only needed if NOT using Tailscale Funnel
+    # ports:
+    #   - "80:80"
+
+volumes:
+  tailscale-state:

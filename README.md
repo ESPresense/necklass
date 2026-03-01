@@ -96,3 +96,22 @@ https://necklass.your-tailnet.ts.net/webhook
 
 If `TAILSCALE_AUTHKEY` is not set, necklass runs as a standard HTTP server. Use Traefik, nginx, or another reverse proxy for TLS termination.
 
+
+## Docker Compose
+
+```bash
+# Create .env file
+cp .env.example .env
+# Edit .env and set GITHUB_WEBHOOK_SECRET and optionally TAILSCALE_AUTHKEY
+
+# Start
+docker compose up -d
+
+# View logs (includes Tailscale Funnel URL if enabled)
+docker compose logs -f
+
+# Stop
+docker compose down
+```
+
+See [docker-compose.yml](docker-compose.yml) for configuration options.
