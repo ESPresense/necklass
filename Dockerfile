@@ -2,15 +2,14 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install Tailscale
+# Install Tailscale from Alpine repos
 RUN apk add --no-cache \
     ca-certificates \
     iptables \
     ip6tables \
     bash \
-    curl \
-    jq && \
-    curl -fsSL https://tailscale.com/install.sh | sh
+    jq \
+    tailscale
 
 # Copy package files
 COPY package*.json ./
