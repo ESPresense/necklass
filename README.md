@@ -58,3 +58,41 @@ docker run -p 80:80 -e GITHUB_WEBHOOK_SECRET=secret github2beads
 | Issue/PR comment | Undefer + append comment |
 | Issue opened | Create bead |
 | Issue closed | Close bead |
+
+## Tailscale Funnel Support
+
+necklass includes built-in Tailscale Funnel support for secure public webhook access without exposing ports or configuring reverse proxies.
+
+### Quick Start with Tailscale
+
+```bash
+docker run -d \
+  -e GITHUB_WEBHOOK_SECRET=your-secret \
+  -e TAILSCALE_AUTHKEY=tskey-auth-xxx \
+  -e TAILSCALE_HOSTNAME=necklass \
+  -e BD_PATH=/usr/local/bin/bd \
+  -v /usr/local/bin/bd:/usr/local/bin/bd:ro \
+  --name necklass \
+  ghcr.io/espresense/necklass:latest
+```
+
+**Environment Variables:**
+- `TAILSCALE_AUTHKEY` - Tailscale auth key (get from https://login.tailscale.com/admin/settings/keys)
+- `TAILSCALE_HOSTNAME` - Tailscale hostname (default: `necklass`)
+- `TAILSCALE_FUNNEL_PORT` - Port to expose via Funnel (default: same as `PORT`)
+
+The container will:
+1. Start Tailscale with userspace networking
+2. Authenticate with your tailnet
+3. Enable Funnel on the webhook port
+4. Print the public HTTPS URL on startup
+
+**GitHub Webhook URL:**
+```
+https://necklass.your-tailnet.ts.net/webhook
+```
+
+### Without Tailscale
+
+If `TAILSCALE_AUTHKEY` is not set, necklass runs as a standard HTTP server. Use Traefik, nginx, or another reverse proxy for TLS termination.
+
