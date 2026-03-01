@@ -1,9 +1,10 @@
 FROM golang:1.23-alpine AS builder
 
-# Clone and build beads v0.46.1 (last version before db migration)
+# Clone and build beads at specific commit (compatible version)
 RUN apk add --no-cache git && \
-    git clone --depth 1 --branch v0.46.1 https://github.com/asg017/beads.git /build && \
+    git clone https://github.com/asg017/beads.git /build && \
     cd /build && \
+    git checkout bd25acbc && \
     go build -o bd ./cmd/bd
 
 FROM node:20-alpine
