@@ -10,10 +10,12 @@ RUN apk add --no-cache \
     bash \
     jq \
     curl \
+    tar \
     tailscale
 
-# Download prebuilt bd binary (v0.50.3)
-RUN curl -fsSL https://github.com/steveyegge/beads/releases/download/v0.50.3/bd-linux-amd64 -o /usr/local/bin/bd && \
+# Download and extract bd binary (v0.50.3)
+RUN curl -fsSL https://github.com/steveyegge/beads/releases/download/v0.50.3/beads_0.50.3_linux_amd64.tar.gz | \
+    tar -xz -C /usr/local/bin bd && \
     chmod +x /usr/local/bin/bd
 
 # Copy package files
